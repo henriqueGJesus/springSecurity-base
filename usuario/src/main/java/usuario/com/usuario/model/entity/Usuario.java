@@ -1,5 +1,6 @@
 package usuario.com.usuario.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,11 +16,11 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(unique = true, nullable = false)
-    private String nome;
-    @Column(nullable = false)
-    private String senha;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private UsuarioDetailsEntity usuarioDetailsEntity;
     private String email;
+    private String nome;
     private Boolean status;
     private Integer idade;
     @OneToOne(cascade = CascadeType.ALL)

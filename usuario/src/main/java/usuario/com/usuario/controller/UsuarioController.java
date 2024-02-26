@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping
 @AllArgsConstructor
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     private UsuarioService usuarioService;

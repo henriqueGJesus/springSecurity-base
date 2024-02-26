@@ -67,7 +67,7 @@ public class UsuarioService {
 
     public void editarSenha(Integer id, String senha){
         Usuario usuario = buscarUm(id);
-        usuario.setSenha(senha);
+//        usuario.setSenha(senha);
         usuarioRepository.save(usuario);
 
     }
