@@ -38,10 +38,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
+        //Prevenção de ataque através de um token/ cria um token para poder identificar o usuario
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers(HttpMethod.POST,"/usuario").permitAll()
                 .requestMatchers(HttpMethod.GET,"/usuario").hasAuthority("GET")
+                .requestMatchers(HttpMethod.PUT,"/usuario").permitAll()
                 .anyRequest().authenticated());
         http.securityContext((context)-> context.securityContextRepository(securityContextRepository));
         http.formLogin(Customizer.withDefaults());

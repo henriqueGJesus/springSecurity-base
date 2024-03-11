@@ -74,5 +74,4 @@ public class UsuarioController {
     public void cadastrarFoto(@RequestParam MultipartFile foto, @PathVariable Integer id) throws IOException {
         usuarioService.atualizarFoto(id,foto);
     }
-
 }
