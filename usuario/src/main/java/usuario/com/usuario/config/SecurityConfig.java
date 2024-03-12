@@ -1,4 +1,4 @@
-package usuario.com.usuario.controller;
+package usuario.com.usuario.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import usuario.com.usuario.filter.FiltroAutenticacao;
 import usuario.com.usuario.model.entity.Usuario;
 import usuario.com.usuario.model.entity.UsuarioDetailsEntity;
 import usuario.com.usuario.repository.UsuarioRepository;
@@ -35,7 +37,7 @@ import usuario.com.usuario.service.AutenticacaoService;
 public class SecurityConfig {
 
     private final SecurityContextRepository securityContextRepository;
-
+    private final FiltroAutenticacao filtroAutenticacao;
     @Bean
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
         //Prevenção de ataque através de um token/ cria um token para poder identificar o usuario
@@ -45,9 +47,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,"/usuario").hasAuthority("GET")
                 .requestMatchers(HttpMethod.PUT,"/usuario").permitAll()
                 .anyRequest().authenticated());
-        http.securityContext((context)-> context.securityContextRepository(securityContextRepository));
+//        http.securityContext((context)-> context.securityContextRepository(securityContextRepository));
         http.formLogin(Customizer.withDefaults());
         http.logout((Customizer.withDefaults()));
+        http.sessionManagement(config ->{
+            config.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        });
+        http.addFilterBefore(filtroAutenticacao,UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 //    @Bean

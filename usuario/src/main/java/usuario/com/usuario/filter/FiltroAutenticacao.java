@@ -1,4 +1,4 @@
-package usuario.com.usuario;
+package usuario.com.usuario.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,17 +30,20 @@ public class FiltroAutenticacao extends OncePerRequestFilter {
     private final AutenticacaoService autenticacaoService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie cookie = cookieUtil.getCookie(request,"JWT");
-        String token = cookie.getValue();
-        String username = jwtUtil.getUsername(token);
-        UserDetails user = autenticacaoService.loadUserByUsername(username);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user, user.getPassword(), user.getAuthorities()
-        );
+        if(!rotaPublica(request)) {
+            Cookie cookie = cookieUtil.getCookie(request, "JWT");
+            String token = cookie.getValue();
+            String username = jwtUtil.getUsername(token);
+            UserDetails user = autenticacaoService.loadUserByUsername(username);
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(
+                    user, user.getPassword(), user.getAuthorities()
+            );
 
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(authentication);
-        securityContextRepository.saveContext(context,request,response);
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authentication);
+            securityContextRepository.saveContext(context, request, response);
+        }
         filterChain.doFilter(request,response);
     }
 

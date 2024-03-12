@@ -1,4 +1,4 @@
-package usuario.com.usuario.controller;
+package usuario.com.usuario.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;

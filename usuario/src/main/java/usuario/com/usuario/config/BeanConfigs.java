@@ -1,4 +1,4 @@
-package usuario.com.usuario.controller;
+package usuario.com.usuario.config;
 
 import lombok.AllArgsConstructor;
 import org.hibernate.query.sqm.internal.NoParamSqmCopyContext;
@@ -15,7 +15,11 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import usuario.com.usuario.service.AutenticacaoService;
+
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor
@@ -44,5 +48,15 @@ public class BeanConfigs {
     @Bean
     public SecurityContextRepository securityContextRepository(){
         return new HttpSessionSecurityContextRepository();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration= new CorsConfiguration();
+
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8082)"));
+        corsConfiguration.setAllowedMethods(List.of("POST","GET","PUT","DELETE"));
+        corsConfiguration.setAllowCredentials(true);
+
     }
 }
