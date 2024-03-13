@@ -44,7 +44,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers(HttpMethod.POST,"/login").permitAll()
-                .requestMatchers(HttpMethod.GET,"/usuario").hasAuthority("GET")
+                .requestMatchers(HttpMethod.GET,"/usuario").permitAll()
                 .requestMatchers(HttpMethod.PUT,"/usuario").permitAll()
                 .anyRequest().authenticated());
 //        http.securityContext((context)-> context.securityContextRepository(securityContextRepository));
