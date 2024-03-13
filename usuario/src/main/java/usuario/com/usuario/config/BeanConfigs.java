@@ -17,6 +17,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import usuario.com.usuario.service.AutenticacaoService;
 
 import java.util.List;
@@ -32,15 +33,15 @@ public class BeanConfigs {
 //        auth.userDetailsService(autenticacaoService).passwordEncoder(NoOpPasswordEncoder.getInstance());
 //    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
-        //dao.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        dao.setPasswordEncoder(new BCryptPasswordEncoder());
         dao.setUserDetailsService(autenticacaoService);
         return new ProviderManager(dao);
     }
@@ -55,8 +56,13 @@ public class BeanConfigs {
         CorsConfiguration corsConfiguration= new CorsConfiguration();
 
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:8082)"));
-        corsConfiguration.setAllowedMethods(List.of("POST","GET","PUT","DELETE"));
+        corsConfiguration.setAllowedMethods(List.of("POST","GET","PUT","DELETE","PATCH"));
         corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource corsConfigurationSource=
+                new UrlBasedCorsConfigurationSource();
+        corsConfigurationSource.registerCorsConfiguration("/**",corsConfiguration);
 
+        return corsConfigurationSource;
     }
 }

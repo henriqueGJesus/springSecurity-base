@@ -21,20 +21,22 @@ import usuario.com.usuario.model.dto.UsuarioLogin;
 import usuario.com.usuario.utils.CookieUtil;
 import usuario.com.usuario.utils.JwtUtil;
 
+
 @RestController
 @AllArgsConstructor
 public class AutenticacaoController {
 
     private final AuthenticationManager authenticationManager;
     private final SecurityContextRepository securityContextRepository;
-    private JwtUtil jwtUtil = new JwtUtil();
-    private CookieUtil cookieUtil = new CookieUtil();
+    private JwtUtil jwtUtil;
+    private CookieUtil cookieUtil;
     @PostMapping("/login")
     public ResponseEntity<String> authenticate(
             @RequestBody UsuarioLogin usuarioLogin, HttpServletRequest request, HttpServletResponse response){
         //Tentando fazer a autenticação
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(usuarioLogin.getUsername(), usuarioLogin.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(usuarioLogin.getUsername(), usuarioLogin.getPassword());
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
 //            //Criando um contexto de segurança(Contexto é onde se guarda o usuario já autenticado/ Manter o usuario ativo)

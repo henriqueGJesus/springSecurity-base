@@ -3,8 +3,9 @@ package usuario.com.usuario.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
-
+@Component
 public class CookieUtil {
     public Cookie gerarCookieJwt(UserDetails userDetails){
         String token = new JwtUtil().gerarToken(userDetails);

@@ -43,12 +43,14 @@ public class SecurityConfig {
         //Prevenção de ataque através de um token/ cria um token para poder identificar o usuario
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(HttpMethod.POST,"/usuario").permitAll()
+                .requestMatchers(HttpMethod.POST,"/login").permitAll()
                 .requestMatchers(HttpMethod.GET,"/usuario").hasAuthority("GET")
                 .requestMatchers(HttpMethod.PUT,"/usuario").permitAll()
                 .anyRequest().authenticated());
 //        http.securityContext((context)-> context.securityContextRepository(securityContextRepository));
-        http.formLogin(Customizer.withDefaults());
+//        http.formLogin(Customizer.withDefaults());
+
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.logout((Customizer.withDefaults()));
         http.sessionManagement(config ->{
             config.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
